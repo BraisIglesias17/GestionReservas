@@ -1,0 +1,22 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="gestionReservas.UI.GeneralMessage"
+        Title="Mensaje de ayuda"
+        Height="100" Width="600"
+        MinHeight="100" MinWidth="600"
+        MaxHeight="1000" MaxWidth="1000">
+    <StackPanel Margin="5">
+            
+        <TextBlock Margin="5" Name="AboutText"></TextBlock>
+        <Button Margin="5" Name="salirAyuda" Content="Volver"></Button>
+        <DockPanel Margin="5" HorizontalAlignment="Center">
+            <Button  Name="btAceptar" Margin="5" IsVisible="False" Content="Si"></Button>    
+            <Button  Name="btCancelar" Margin="5" IsVisible="False" Content="No"></Button>    
+        </DockPanel>
+        
+    </StackPanel>
+        
+</Window>

@@ -1,0 +1,96 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="gestionReservas.UI.MainWindow"
+        Title="gestionReservas"
+        MinWidth="1300"
+        MinHeight="600"
+        Width="1300"
+        Height="600">
+        
+    
+        <StackPanel Margin="7"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                        
+                        
+                        <Label Margin="5" Content="Bienvenido"></Label>
+                        <Menu
+                                VerticalAlignment="Top">
+                    
+                                <MenuItem Header="Archivo">
+                                        <MenuItem Header="Guardar" Name="OpGuardar" />
+                                        <MenuItem Header="Salir" Name="OpExit" />
+                                </MenuItem>
+                                <MenuItem Header="Editar">
+                                        <MenuItem Header="Insertar" Name="OpInsert" />
+                                </MenuItem>
+                        </Menu>
+                
+                        <DockPanel
+                                Margin="5"
+                                VerticalAlignment="Stretch">
+                
+                                <Border    Margin="5"
+                                           BorderThickness="1"
+                                           CornerRadius="3"
+                                           BorderBrush="Black">
+                                          <Grid>
+                                                <DataGrid Name="DtReservas"
+                                                          Margin="5"
+                                                          AutoGenerateColumns="False"
+                                                          IsReadOnly="True"
+                                                          SelectionMode="Single"
+                                                          AlternatingRowBackground="LightBlue"
+                                                          >
+                                    
+                                    
+                                                        <DataGrid.Columns>
+                                                                <DataGridTextColumn Header="ID"  Binding="{Binding IdReserva}" />
+                                                                <DataGridTextColumn Header="Cliente"  Binding="{Binding Cliente.Dni}" />
+                                                                <DataGridTextColumn Header="Habitacion"  Binding="{Binding Habitacion.NumHabitacion}" />
+                                                                <DataGridTextColumn Header="Importe por dia"  Binding="{Binding PrecioPorDia}" />
+                                                                <DataGridTextColumn Header="Fecha de entrada"  Binding="{Binding FechaEntrada}" />
+                                                                <DataGridTextColumn Header="Fecha de salida" Binding="{Binding FechaSalida}" />
+                                                                <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo}" />
+                                                                <DataGridTextColumn Header="Garaje" Binding="{Binding UsaGaraje}" />
+                                                                <DataGridTextColumn Header="IVA aplicado" Binding="{Binding IVA}" />
+                                                                
+                                                        </DataGrid.Columns>
+                                                        
+                                                        
+                                                        
+                                                </DataGrid>
+                                                  
+                                          </Grid>
+                                </Border>
+                                
+                    
+                        </DockPanel>
+                <DockPanel Margin="5" HorizontalAlignment="Center">
+                       
+                        <Button Margin="5" Content="Modificar" Name="btModificar"></Button>
+                                                                       
+                                                                
+                        <Button Margin="5" Content="Eliminar" Name="btEliminar"></Button>
+                                                                        
+                </DockPanel>
+                        
+                <!--
+                        <DockPanel VerticalAlignment="Bottom">
+                                <Label Content="Numero de reservas almacenadas: "
+                                        Name="LblDesc"
+                                        Margin="5"
+                                        VerticalAlignment="Bottom"
+                                        HorizontalAlignment="Stretch" />
+                                <Label Name="LbNumReservas"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Stretch"></Label>
+                                <Button Name="BtRefresh">Refrescar</Button>
+                        </DockPanel>-->
+                        
+                            
+                </StackPanel>
+</Window>

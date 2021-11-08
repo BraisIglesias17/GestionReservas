@@ -1,0 +1,62 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="gestionReservas.UI.InsertarReserva"
+        Title="Insertar reserva"
+        Height="500" Width="550"
+        MinHeight="500" MinWidth="550"
+        MaxHeight="1000" MaxWidth="1000">
+    <StackPanel Margin="7"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+        
+        <DockPanel Margin="5">
+            <Label Margin="5" Width="150" >IVA aplicado</Label>
+            <TextBox Name="tbIva"></TextBox>
+        </DockPanel>
+        <DockPanel Margin="5">
+            <Label Margin="5" Width="150" >Tipo</Label>
+            <TextBox Name="tbTipo"></TextBox>
+        </DockPanel>
+        <DockPanel Margin="5">
+            <Label Margin="5" Width="150" >Importe por dia</Label>
+            <TextBox Name="tbImportePorDia"></TextBox>
+        </DockPanel >
+        <DockPanel Name="dpClientes" Margin="5" IsVisible="False">
+            <Label Margin="5" Width="150">Cliente</Label>
+            <TextBox Name="tbDNICliente" IsEnabled="False"></TextBox>
+        </DockPanel>
+        <DockPanel Name="dpHabitaciones" Margin="5" IsVisible="False">
+            <Label Margin="5" Width="150">Habitacion</Label>
+            <TextBox Name="tbNumHabitacion" IsEnabled="False"></TextBox>
+        </DockPanel>
+        <DockPanel Margin="5">
+            <Label Margin="5" Width="150" >Garaje</Label>
+            <CheckBox Name="cbGaraje"></CheckBox>
+        </DockPanel>
+        <DockPanel Margin="5">
+            <Label Margin="5" Width="150" >Fecha de entrada</Label>
+            <DatePicker Name="dpFechaEntrada"></DatePicker>
+        </DockPanel>
+        <DockPanel Margin="5">
+            <Label Margin="5" Width="150" >Fecha de entrada</Label>
+            <DatePicker Name="dpFechaSalida"></DatePicker>
+        </DockPanel>
+        
+        
+        <ComboBox  Width="150" Margin="10" HorizontalAlignment="Center" PlaceholderText="Cliente" Name="cbClienteReserva">
+            
+        </ComboBox>
+        
+        <ComboBox  Width="150" Margin="10" HorizontalAlignment="Center" PlaceholderText="Habitacion" Name="cbHabitacionReserva">
+        </ComboBox>
+        
+        
+        <DockPanel Margin="15" HorizontalAlignment="Center">
+            <Button Name="btInsertarReserva">Añadir reserva</Button>
+        </DockPanel>
+    </StackPanel>
+        
+</Window>
