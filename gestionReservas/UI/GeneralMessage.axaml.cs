@@ -15,6 +15,7 @@ namespace gestionReservas.UI
     {
         private bool confirmacion=false;
         
+        
         public GeneralMessage(string mensaje,bool confirmacion):this()
         {
             var texBlock = this.FindControl<TextBlock>("AboutText");
@@ -48,26 +49,33 @@ namespace gestionReservas.UI
 #if DEBUG
             this.AttachDevTools();
 #endif
-
-            
-           
-
+            this.IsCancelled = true;
         }
 
         private void OnCancel()
         {
+            this.IsCancelled = true;
             this.Close();
         }
 
         private void OnAccept()
         {
-            
+            this.IsCancelled = false;
             this.Close();
+        }
+
+
+        public bool IsCancelled
+        {
+            get;
+            set;
         }
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }
+        
+        
     }
 }

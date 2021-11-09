@@ -42,10 +42,10 @@ namespace gestionReservas.UI
         }
         
         //Constructor para modificacion
-        public InsertarReserva(RegistroReservas reservas,Reserva r, List<Cliente> clientes,List<Habitacion> habitaciones):this()
+        public InsertarReserva(RegistroReservas reservas,int position, List<Cliente> clientes,List<Habitacion> habitaciones):this()
         {
             this.reservas = reservas;
-            this.r = r;
+            this.r = this.reservas[position];
             this._clientes = clientes;
             this._habitaciones = habitaciones;
             this.fillData();
@@ -63,6 +63,12 @@ namespace gestionReservas.UI
             cbClientes.SelectedItem = this.r.Cliente;
             cbHabitaciones.SelectedItem = this.r.Habitacion;
             cbHabitaciones.Items = this._habitaciones;
+
+            if (this._clientes.Contains(this._cliente))
+            {
+                Console.Write("");
+            }
+                
             
             cbClientes.PlaceholderText = this.r.Cliente.Dni;
             cbHabitaciones.PlaceholderText = this.r.Habitacion.NumHabitacion.ToString();

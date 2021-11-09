@@ -91,6 +91,6 @@
                                 <Button Name="BtRefresh">Refrescar</Button>
                         </DockPanel>-->
                         
-                            
-                </StackPanel>
+                
+                </StackPanel>   
 </Window>

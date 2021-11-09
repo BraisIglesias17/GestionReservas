@@ -15,8 +15,10 @@ namespace gestionReservas.UI
     {
         private List<Cliente> c;
         private List<Habitacion> h;
-
-
+        Cliente c1=new Cliente("00000000h");
+        Cliente c2=new Cliente("44235500l");
+        Habitacion h1=new Habitacion(1);
+       Habitacion h2= new Habitacion(2);
         private RegistroReservas listaReservas;
         public MainWindow()
         {
@@ -35,10 +37,11 @@ namespace gestionReservas.UI
             }
             List<Cliente> clientes = new List<Cliente>();
                 List<Habitacion> habitacions = new List<Habitacion>();
-                clientes.Add(new Cliente("44235500l"));
-                clientes.Add(new Cliente("00000000h"));
-                habitacions.Add(new Habitacion(1));
-                habitacions.Add(new Habitacion(2));
+                clientes.Add(c1);
+                clientes.Add(c2);
+                habitacions.Add(h1);
+                habitacions.Add(h2);
+                
 
                 this.c = clientes;
                 this.h = habitacions;
@@ -47,7 +50,7 @@ namespace gestionReservas.UI
                 var opGuardar = this.FindControl<MenuItem>("OpGuardar");
                 var opModificar = this.FindControl<Button>("btModificar");
                 var opEliminar = this.FindControl<Button>("btEliminar");
-                
+                var opSalir = this.FindControl<MenuItem>("OpExit");
                 dtReservas.Items = this.listaReservas;
                 
             
@@ -55,18 +58,28 @@ namespace gestionReservas.UI
                 opInsertar.Click += (_, _) => this.OnInsert();
                 opEliminar.Click += (_, _) => this.OnDelete(dtReservas.SelectedIndex);
                 opModificar.Click += (_, _) => this.OnModify(dtReservas.SelectedIndex);
-               
-            
+                opSalir.Click += (_, _) => this.OnExit();
+
         }
 
-        private void OnDelete(int position)
+        private void OnExit()
+        {
+            this.Close();
+        }
+
+        private async void OnDelete(int position)
         {
             if (position != -1)
             {
                 try
-                {
-                    new GeneralMessage("Seguro que deseas eliminar esta reserva", true).ShowDialog(this);
-                    this.listaReservas.RemoveAt(position);
+                { //async awaait
+                    GeneralMessage dialog = new GeneralMessage("Seguro que deseas eliminar esta reserva", true);
+                    await dialog.ShowDialog(this);
+                    if (!dialog.IsCancelled)
+                    {
+                        this.listaReservas.RemoveAt(position);
+                    }
+                    
                 }
                 catch (Exception e)
                 {
@@ -86,7 +99,8 @@ namespace gestionReservas.UI
         {
             if (position != -1)
             {
-                new InsertarReserva(this.listaReservas,this.listaReservas[position],this.c,this.h).ShowDialog(this);
+                //new InsertarReserva(this.listaReservas,this.listaReservas[position],this.c,this.h).ShowDialog(this);
+                new InsertarReserva(this.listaReservas,position,this.c,this.h).ShowDialog(this);
             }
             else
             {
@@ -96,8 +110,8 @@ namespace gestionReservas.UI
 
         private void OnInsert()
         { 
-            new InsertarReserva(this.listaReservas,this.c,this.h,new Cliente("44235500l"),new Habitacion(12)).ShowDialog(this);
-            //new InsertarReserva(this.listaReservas,this.c,this.h).ShowDialog(this);
+            //new InsertarReserva(this.listaReservas,this.c,this.h,c1,h1).ShowDialog(this);
+            new InsertarReserva(this.listaReservas,this.c,this.h).ShowDialog(this);
         }
         
         private void OnSave(string nf)
