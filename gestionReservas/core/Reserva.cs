@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace gestionReservas.core
 {
@@ -72,5 +73,30 @@ namespace gestionReservas.core
            
         }
 
+        public string GetFactura
+        {
+            get
+            {
+                
+                string factura="\n ############# FACTURA #############\n";
+                factura += "\n - ID  de la reserva: "+this.IdReserva+"\n";
+                factura += "\n - DNI cliente: "+this.Cliente.Dni+"\n";
+                factura += "\n - IVA: "+this.IVA+" %\n";
+                factura += "\n - Importe por día: "+this.PrecioPorDia+"\n";
+                factura += "\n TOTAL : " + this.getTotal() +" "+DIVISA+" \n";
+                factura += "\n ##################################";
+
+                return factura;
+            }
+        }
+
+        private const string DIVISA = "€";
+
+        private double getTotal()
+        {
+            int numDias = (this.FechaSalida - this.FechaEntrada).Days;
+            double sinIVA = numDias * this.PrecioPorDia;
+            return sinIVA + (sinIVA * this.IVA/100);
+        }
     }
 }

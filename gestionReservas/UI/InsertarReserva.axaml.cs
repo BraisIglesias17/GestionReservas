@@ -19,9 +19,11 @@ namespace gestionReservas.UI
         private Habitacion _habitacion;
         private List<Cliente> _clientes;
         private List<Habitacion> _habitaciones;
-        private Reserva r;
+        //private Reserva r;
+        private int position;
         public InsertarReserva(RegistroReservas reservas,List<Cliente> clientes, List<Habitacion> habitaciones,Cliente cliente, Habitacion habitacion):this()
         {
+            this.position = -1;
             this.reservas = reservas;
             this._cliente = cliente;
             this._habitacion = habitacion;
@@ -33,6 +35,7 @@ namespace gestionReservas.UI
         
         public InsertarReserva(RegistroReservas reservas, List<Cliente> clientes, List<Habitacion> habitaciones):this()
         {
+            this.position = -1;
             this.reservas = reservas;
             this._clientes = clientes;
             this._habitaciones = habitaciones;
@@ -45,7 +48,7 @@ namespace gestionReservas.UI
         public InsertarReserva(RegistroReservas reservas,int position, List<Cliente> clientes,List<Habitacion> habitaciones):this()
         {
             this.reservas = reservas;
-            this.r = this.reservas[position];
+            this.position = position;
             this._clientes = clientes;
             this._habitaciones = habitaciones;
             this.fillData();
@@ -59,10 +62,11 @@ namespace gestionReservas.UI
             var cbClientes = this.FindControl<ComboBox>("cbClienteReserva");
             var cbHabitaciones = this.FindControl<ComboBox>("cbHabitacionReserva");
 
+            /*
             cbClientes.Items = this._clientes;
-            cbClientes.SelectedItem = this.r.Cliente;
-            cbHabitaciones.SelectedItem = this.r.Habitacion;
+            cbClientes.SelectedItem = this.reservas[this.position].Cliente;
             cbHabitaciones.Items = this._habitaciones;
+            cbHabitaciones.SelectedItem = this.reservas[this.position].Habitacion;
 
             if (this._clientes.Contains(this._cliente))
             {
@@ -70,11 +74,28 @@ namespace gestionReservas.UI
             }
                 
             
-            cbClientes.PlaceholderText = this.r.Cliente.Dni;
-            cbHabitaciones.PlaceholderText = this.r.Habitacion.NumHabitacion.ToString();
+            cbClientes.PlaceholderText = this.reservas[this.position].Cliente.Dni;
+            cbHabitaciones.PlaceholderText = this.reservas[this.position].Habitacion.NumHabitacion.ToString();*/
+            cbClientes.IsVisible = false;
+            cbHabitaciones.IsVisible = false;
             
-           
-            ;
+            cbClientes.IsVisible = false;
+            var dpClientes = this.FindControl<DockPanel>("dpClientes");
+            dpClientes.IsVisible = true;
+            var tbDni = this.FindControl<TextBox>("tbDNICliente");
+            tbDni.Text = this.reservas[this.position].Cliente.Dni;
+            
+            
+            cbClientes.IsVisible = false;
+            var dpHabitaciones = this.FindControl<DockPanel>("dpHabitaciones");
+            dpHabitaciones.IsVisible = true;
+            var tbNumH = this.FindControl<TextBox>("tbNumHabitacion");
+            tbNumH.Text = this.reservas[this.position].Habitacion.NumHabitacion.ToString();
+
+            tbDni.IsEnabled = true;
+            tbNumH.IsEnabled = true;
+
+
         }
 
 
@@ -99,14 +120,14 @@ namespace gestionReservas.UI
             var garaje= this.FindControl<CheckBox>("cbGaraje");
             var precioDia = this.FindControl<TextBox>("tbImportePorDia");
 
-            tipo.Text = this.r.Tipo;
-            fechaEntrada.SelectedDate = this.r.FechaEntrada;
-            fechaSalida.SelectedDate = this.r.FechaSalida;
-            iva.Text = this.r.IVA.ToString();
-            garaje.IsChecked = this.r.UsaGaraje;
-            precioDia.Text = this.r.PrecioPorDia.ToString();
-            this._cliente = this.r.Cliente;
-            this._habitacion = this.r.Habitacion;
+            tipo.Text = this.reservas[this.position].Tipo;
+            fechaEntrada.SelectedDate = this.reservas[this.position].FechaEntrada;
+            fechaSalida.SelectedDate = this.reservas[this.position].FechaSalida;
+            iva.Text = this.reservas[this.position].IVA.ToString();
+            garaje.IsChecked = this.reservas[this.position].UsaGaraje;
+            precioDia.Text = this.reservas[this.position].PrecioPorDia.ToString();
+            this._cliente = this.reservas[this.position].Cliente;
+            this._habitacion = this.reservas[this.position].Habitacion;
         }
         private void drawButton(string op)
         {
@@ -160,7 +181,7 @@ namespace gestionReservas.UI
             
             //Introducir logica de INSERCION MODIFICACION
 
-            if (this.r == null)
+            if (this.position == -1)
             {
                 this.OnInsert();
             }
@@ -179,37 +200,87 @@ namespace gestionReservas.UI
         {
             if (this.CheckIfNull())
             {
-                var tipo= this.FindControl<TextBox>("tbTipo");
-                var fechaEntrada= this.FindControl<DatePicker>("dpFechaEntrada");
-                var fechaSalida= this.FindControl<DatePicker>("dpFechaSalida");
-                var iva= this.FindControl<TextBox>("tbIva");
-                var garaje= this.FindControl<CheckBox>("cbGaraje");
-                var precioDia = this.FindControl<TextBox>("tbImportePorDia");
-
-                Cliente cliente = this.GetCliente();
-                Habitacion habitacion = this.GetHabitacion();
-
-                DateTime fEntrada = fechaEntrada.SelectedDate.Value.DateTime;
-                DateTime fSalida = fechaSalida.SelectedDate.Value.DateTime;
-                bool hayGaraje = (bool) garaje.IsChecked;
-
-                if (this.CheckNumberInteger(iva.Text) && this.CheckNumberDouble(precioDia.Text))
+                if (this.CheckIfClientExists())
                 {
-                    Reserva toAdd = new Reserva(cliente,habitacion,fEntrada,fSalida,Int32.Parse(iva.Text),hayGaraje,Double.Parse(precioDia.Text),tipo.Text );
+                    if (this.CheckIfHabExists())
+                    {
+                        var tipo= this.FindControl<TextBox>("tbTipo");
+                        var fechaEntrada= this.FindControl<DatePicker>("dpFechaEntrada");
+                        var fechaSalida= this.FindControl<DatePicker>("dpFechaSalida");
+                        var iva= this.FindControl<TextBox>("tbIva");
+                        var garaje= this.FindControl<CheckBox>("cbGaraje");
+                        var precioDia = this.FindControl<TextBox>("tbImportePorDia");
 
-                    this.reservas.RemoveReserva(this.r);
-                    this.reservas.AddReserva(toAdd);
-                    this.Close();
+                        Cliente cliente = this.GetCliente();
+                        Habitacion habitacion = this.GetHabitacion();
+
+                        DateTime fEntrada = fechaEntrada.SelectedDate.Value.DateTime;
+                        DateTime fSalida = fechaSalida.SelectedDate.Value.DateTime;
+                        bool hayGaraje = (bool) garaje.IsChecked;
+
+                        if (this.CheckNumberInteger(iva.Text) && this.CheckNumberDouble(precioDia.Text))
+                        {
+                            Reserva toAdd = new Reserva(cliente,habitacion,fEntrada,fSalida,Int32.Parse(iva.Text),hayGaraje,Double.Parse(precioDia.Text),tipo.Text );
+                            
+                            this.reservas.RemoveReserva(this.reservas[this.position]);
+                            this.reservas.AddReserva(toAdd);
+                            this.Close();
+                        }
+                        else
+                        {
+                            new GeneralMessage("Error en algun dato",false).Show();
+                        }
+                    }
+                    else
+                    {
+                        new GeneralMessage("El numero de habitación no existe",false).Show();
+                    }
                 }
                 else
-                {
-                    new GeneralMessage("Error en algun dato",false).Show();
+                {   
+                    new GeneralMessage("No existe un usuario con ese DNI",false).Show();
                 }
             }
             else
             {
                 new GeneralMessage("Algún campo esta vacío",false).Show();
             }
+        }
+
+        private bool CheckIfHabExists()
+        {
+            bool toret = false;
+            var tbHab = this.FindControl<TextBox>("tbNumHabitacion");
+            int num = Int32.Parse((tbHab.Text));
+
+            foreach (var h in this._habitaciones)
+            {
+                if (h.NumHabitacion == num)
+                {
+                    toret = true;
+                    break;
+                }
+            }
+
+            return toret;
+        }
+
+        private bool CheckIfClientExists()
+        {
+            bool toret = false;
+            var tbClient = this.FindControl<TextBox>("tbDNICliente");
+            string dni = tbClient.Text;
+
+            foreach (var c in this._clientes)
+            {
+                if (c.Dni == dni)
+                {
+                    toret = true;
+                    break;
+                }
+            }
+
+            return toret;
         }
 
         private void OnInsert()
@@ -252,38 +323,70 @@ namespace gestionReservas.UI
 
         private Cliente GetCliente()
         {
-            Cliente toret;
+            Cliente toret=null;
 
             var clientes = this.FindControl<ComboBox>("cbClienteReserva");
 
-            if (clientes.IsVisible)
+            if (this.position == -1)
             {
-                toret= (Cliente) clientes.SelectedItem;
+                if (clientes.IsVisible)
+                {
+                    toret = (Cliente) clientes.SelectedItem;
+                }
+                else
+                {
+                    toret = this._cliente;
+                }
             }
             else
             {
-                toret = this._cliente;
+                var etClienteDDNI = this.FindControl<TextBox>("tbDNICliente");
+                string DNI = etClienteDDNI.Text;
+                foreach (var cliente in this._clientes)
+                {
+                    if (cliente.Dni == DNI)
+                    {
+                        toret = cliente;
+                        break;
+                    }   
+                }
             }
-            
-            
-            
+
+
+
             return toret;
         }
 
         private Habitacion GetHabitacion()
         {
-            Habitacion toret;
+            Habitacion toret=null;
     
           
             var habitaciones = this.FindControl<ComboBox>("cbHabitacionReserva");
-
-            if (habitaciones.IsVisible)
+            
+            if (this.position == -1)
             {
-                toret = (Habitacion) habitaciones.SelectedItem;
+                if (habitaciones.IsVisible)
+                {
+                    toret = (Habitacion) habitaciones.SelectedItem;
+                }
+                else
+                {
+                    toret = this._habitacion;
+                }
             }
             else
             {
-                toret = this._habitacion;
+                var etNumHabitacion = this.FindControl<TextBox>("tbNumHabitacion");
+                int numHabitacion = Int32.Parse(etNumHabitacion.Text);
+                foreach (var habitacion in this._habitaciones)
+                {
+                    if (habitacion.NumHabitacion == numHabitacion)
+                    {
+                        toret = habitacion;
+                        break;
+                    }   
+                }
             }
 
             return toret;

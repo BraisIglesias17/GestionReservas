@@ -5,9 +5,9 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="gestionReservas.UI.GeneralMessage"
         Title="Mensaje de ayuda"
-        Height="100" Width="600"
+        Height="100" Width="1000"
         MinHeight="100" MinWidth="600"
-        MaxHeight="1000" MaxWidth="1000">
+        MaxHeight="1000" MaxWidth="5000">
     <StackPanel Margin="5">
             
         <TextBlock Margin="5" Name="AboutText" HorizontalAlignment="Center"></TextBlock>

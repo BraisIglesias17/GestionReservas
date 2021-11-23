@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices.ComTypes;
 using Avalonia;
 using Avalonia.Controls;
@@ -51,15 +52,38 @@ namespace gestionReservas.UI
                 var opModificar = this.FindControl<Button>("btModificar");
                 var opEliminar = this.FindControl<Button>("btEliminar");
                 var opSalir = this.FindControl<MenuItem>("OpExit");
+                var opFactura = this.FindControl<Button>("btFactura");
+                
                 dtReservas.Items = this.listaReservas;
                 
-            
                 opGuardar.Click += (_, _) => this.OnSave("reservas.txt");
                 opInsertar.Click += (_, _) => this.OnInsert();
                 opEliminar.Click += (_, _) => this.OnDelete(dtReservas.SelectedIndex);
                 opModificar.Click += (_, _) => this.OnModify(dtReservas.SelectedIndex);
+                opFactura.Click += (_, _) => this.onGenerateReceipt(dtReservas.SelectedIndex);
                 opSalir.Click += (_, _) => this.OnExit();
 
+        }
+
+        private void onGenerateReceipt(int position)
+        {
+            if (position != -1)
+            {
+
+                string texto = this.listaReservas[position].GetFactura;
+                this.showReceipt(texto,this.listaReservas[position].IdReserva);
+
+            }
+            else
+            {
+                new GeneralMessage("Debes seleccionar una fila antes",false).Show();
+            }
+        }
+
+        private void showReceipt(string texto,int id)
+        {
+            VisualizacionFactura dialog = new VisualizacionFactura(texto,id);
+            dialog.ShowDialog(this);
         }
 
         private void OnExit()
@@ -72,7 +96,7 @@ namespace gestionReservas.UI
             if (position != -1)
             {
                 try
-                { //async awaait
+                { 
                     GeneralMessage dialog = new GeneralMessage("Seguro que deseas eliminar esta reserva", true);
                     await dialog.ShowDialog(this);
                     if (!dialog.IsCancelled)
@@ -99,7 +123,7 @@ namespace gestionReservas.UI
         {
             if (position != -1)
             {
-                //new InsertarReserva(this.listaReservas,this.listaReservas[position],this.c,this.h).ShowDialog(this);
+                
                 new InsertarReserva(this.listaReservas,position,this.c,this.h).ShowDialog(this);
             }
             else
@@ -110,8 +134,8 @@ namespace gestionReservas.UI
 
         private void OnInsert()
         { 
-            //new InsertarReserva(this.listaReservas,this.c,this.h,c1,h1).ShowDialog(this);
-            new InsertarReserva(this.listaReservas,this.c,this.h).ShowDialog(this);
+            new InsertarReserva(this.listaReservas,this.c,this.h,c1,null).ShowDialog(this);
+            //new InsertarReserva(this.listaReservas,this.c,this.h).ShowDialog(this);
         }
         
         private void OnSave(string nf)
@@ -135,14 +159,6 @@ namespace gestionReservas.UI
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void ModificarReserva()
-        {
-            
-        }
-
-        private void EliminarReserva()
-        {
-            
-        }
+        
     }
 }

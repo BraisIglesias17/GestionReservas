@@ -44,7 +44,7 @@
                                                           IsReadOnly="True"
                                                           SelectionMode="Single"
                                                           AlternatingRowBackground="LightBlue"
-                                                          >
+                                                          MinHeight="250">
                                     
                                     
                                                         <DataGrid.Columns>
@@ -70,6 +70,8 @@
                     
                         </DockPanel>
                 <DockPanel Margin="5" HorizontalAlignment="Center">
+                        
+                        <Button Margin="5" Content="Generar factura" Name="btFactura"></Button>
                        
                         <Button Margin="5" Content="Modificar" Name="btModificar"></Button>
                                                                        
